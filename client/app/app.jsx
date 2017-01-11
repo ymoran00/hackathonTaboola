@@ -22,13 +22,17 @@ export class App extends React.Component {
     var that = this;
     $.post(ELASTIC_SEARCH_API,
         JSON.stringify({
-          'query': {
-            'multi_match': {
-              'query': '' + text,
-              'fields': ['title', 'text']
-            }
+              'query':
+              {
+                  'multi_match':
+                  {
+                      'query':'' + text,
+                      'fields':['title','text'],
+                      'minimum_should_match': '80%'
+                  }
+              }
           }
-        }),$.proxy(function(data) {
+        ),$.proxy(function(data) {
           console.log (`got ${data}!`);
           this.setState({
               items: data.hits.hits
