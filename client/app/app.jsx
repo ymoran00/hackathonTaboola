@@ -31,7 +31,12 @@ export class App extends React.Component {
                       'fields':['title','text']
                       // 'minimum_should_match': '80%'
                   }
-              }
+              },
+              "sort": [
+                  { "_score": { "order": "desc" }},
+                  { "ctr": { "order": "desc" }},
+                  { "date": { "order": "desc" }}
+              ]
           }
         ),$.proxy(function(data) {
           console.log (`got ${data}!`);
