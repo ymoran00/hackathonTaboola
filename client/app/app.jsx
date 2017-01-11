@@ -24,7 +24,7 @@ export class App extends React.Component {
         JSON.stringify({
           'query': {
             'multi_match': {
-              'query': 'turkey 2017',
+              'query': '' + text,
               'fields': ['title', 'text']
             }
           }
