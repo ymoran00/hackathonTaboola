@@ -8,9 +8,13 @@ export default class ArticleCard extends React.Component {
   }
 
   fixThumbnailUrl(url) {
-    var newUrl = url.split('!-#');
-    if (newUrl && newUrl[0]) {
-      return newUrl[0];
+    if (url) {
+      var newUrl = url.split('!-#');
+      if (newUrl && newUrl[0]) {
+        return newUrl[0];
+      }
+    } else {
+      return '/dist/res/oops-image.gif';
     }
     return url;
   }
