@@ -8,7 +8,7 @@ import java.net.URL;
  * Created by dotan.b on 1/11/17.
  */
 public class BoilerpipeDriver {
-    public static void main(String[] args) {
+    public static void getText(String[] args) {
         URL url = null;
         String text = null;
         try {
@@ -21,7 +21,6 @@ public class BoilerpipeDriver {
         } catch (BoilerpipeProcessingException e) {
             e.printStackTrace();
         }
-// NOTE: Use ArticleExtractor unless DefaultExtractor gives better results for you
         System.out.println(text);
     }
 

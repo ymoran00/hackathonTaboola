@@ -1,4 +1,9 @@
 import java.sql.*;
+import de.l3s.boilerpipe.BoilerpipeProcessingException;
+import de.l3s.boilerpipe.extractors.ArticleExtractor;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Created by dotan.b on 1/11/17.
@@ -16,6 +21,7 @@ public class dbTest {
         public static void main(String[] args) {
             Connection conn = null;
             Statement stmt = null;
+
             try {
                 //STEP 2: Register JDBC driver
                 Class.forName("com.mysql.jdbc.Driver");
@@ -29,21 +35,35 @@ public class dbTest {
                 System.out.println("Creating statement...");
                 stmt = conn.createStatement();
 
-                String sql = "SELECT id, url FROM videos limit 10";
+                String sql = "SELECT id, url, pub_id FROM videos limit 10";
+
                 ResultSet rs = stmt.executeQuery(sql);
                 //STEP 5: Extract data from result set
                 while (rs.next()) {
                     //Retrieve by column name
+                    String text = null;
                     long id = rs.getLong("id");
-                    String url = rs.getString("url");
-                   // String first = rs.getString("first");
-                   // String last = rs.getString("last");
+                    URL url = new URL(rs.getString("url"));
+                   // String articleText = null;
+
+                    try {
+                        text = ArticleExtractor.INSTANCE.getText(url);
+                        System.out.println("============================================================");
+                        System.out.println("ID: " + id);
+                        System.out.println("Url: " + url);
+                        System.out.println("text: " + text);
+
+                    } catch (BoilerpipeProcessingException e) {
+                        e.printStackTrace();
+                    }
 
                     //Display values
-                    System.out.print("ID: " + id);
-                    System.out.print(", Url: " + url);
-                   // System.out.print(", First: " + first);
-                   // System.out.println(", Last: " + last);
+
+
+
+
+
+
                 }
                 rs.close();
             } catch (SQLException se) {
