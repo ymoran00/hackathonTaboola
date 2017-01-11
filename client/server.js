@@ -4,7 +4,7 @@ const fs = require('fs');
 const port = process.env.PORT || 8282;
 
 var app = express();
-app.use(express.static(__dirname + '/public', {
+app.use(express.static(__dirname + '/', {
   extensions: ['html', 'htm'],
 }));
 

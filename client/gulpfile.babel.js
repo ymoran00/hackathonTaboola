@@ -8,7 +8,9 @@ import buffer from 'vinyl-buffer';
 import browserify from 'browserify';
 import uglify from 'gulp-uglify';
 import gutil from 'gulp-util';
+import concat from 'gulp-concat';
 import del from 'del';
+import babelify from 'babelify';
 import sourcemaps from 'gulp-sourcemaps';
 import runSequenceBase from 'run-sequence';
 
@@ -25,8 +27,8 @@ const AUTOPREFIXER_BROWSERS = [
             'bb >= 10'
         ];
 const dirs = {
-  src: 'src',
-  dest: 'build'
+  src: 'app',
+  dest: 'dist'
 };
 
 const sassPaths = {
@@ -34,19 +36,25 @@ const sassPaths = {
   dest: `${dirs.dest}/css/`
 };
 
-gulp.task('sass', () => {
-  return gulp.src(sassPaths.src)
-    .pipe(sourcemaps.init({loadMaps: true}))
-    .pipe(sass.sync().on('error', sass.logError))
-    .pipe(autoprefixer())
-    .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest(sassPaths.dest));
-});
-
 const cssPaths = {
   src: `${dirs.src}/css/*.css`,
   dest: `${dirs.dest}/css/`
 };
+
+const appPaths = {
+  src: `${dirs.src}/css/*.css`,
+  dest: `${dirs.dest}/css/`
+};
+
+gulp.task('sass', () => {
+  return gulp.src(sassPaths.src)
+    .pipe(sourcemaps.init({loadMaps: true}))
+    .pipe(sass.sync().on('error', sass.logError))
+    .pipe(autoprefixer(AUTOPREFIXER_BROWSERS))
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest(sassPaths.dest));
+});
+
 
 gulp.task('css', () => {
   return gulp.src(cssPaths.src)
@@ -54,56 +62,28 @@ gulp.task('css', () => {
     .pipe(gulp.dest(cssPaths.dest));
 });
 
-const jsPaths = {
-  src: `${dirs.src}/js/*.js`,
-  dest: `${dirs.dest}/js/`
-};
-
-const imagesPaths = {
-  src: `${dirs.src}/images/**/*`,
-  dest: `${dirs.dest}/images/`
-};
+// const appPath = {
+//   src: `${dirs.src}/js/*.js`,
+//   dest: `${dirs.dest}/js/`
+// };
 
 
-
-gulp.task('build-js', () => {
-  // set up the browserify instance on a task basis
-  // var b = browserify({
-  //   entries: ['']
-  //   debug: true
-  // });
-  //
-  // return b.bundle()
-  //   .pipe(source(jsPaths.src))
-  //   .pipe(buffer())
-  //   .pipe(sourcemaps.init({loadMaps: true}))
-  //       // Add transformation tasks to the pipeline here.
-  //       .pipe(uglify())
-  //       .on('error', gutil.log)
-  //   .pipe(sourcemaps.write('.'))
-  //   .pipe(gulp.dest(jsPaths.dest));
-
-  return gulp.src(jsPaths.src)
-    .pipe(gulp.dest(jsPaths.dest));
+gulp.task('build', () => {
+  return browserify({entries: `${dirs.src}/app.jsx`, extensions: ['.jsx'], debug: true})
+      .transform('babelify', {presets: ['es2015', 'react']})
+      .bundle()
+      .pipe(source('bundle.js'))
+      .pipe(gulp.dest(dirs.dest));
 });
 
-gulp.task('images', () => {
-  return gulp.src(imagesPaths.src)
-    .pipe(gulp.dest(imagesPaths.dest));
+gulp.task('watch', ['build'], function () {
+    gulp.watch('src/*.jsx', ['build']);
 });
 
-gulp.task('index', () => {
-  return gulp.src(`${dirs.src}/index.html`)
-    .pipe(gulp.dest(dirs.dest));
-});
+
 
 gulp.task('clean', (cb) => {
     return del(`${dirs.dest}/**/*`, cb);
-});
-
-gulp.task('deploy', () => {
-  return gulp.src(`${dirs.dest}/**/*`)
-    .pipe(gulp.dest('public'));
 });
 
 
@@ -112,9 +92,6 @@ gulp.task('default', (cb) => {
     ['clean'],
     ['sass'],
     ['css'],
-    ['build-js'],
-    ['images'],
-    ['index'],
-    ['deploy'],
+    ['build'],
     cb);
 });
