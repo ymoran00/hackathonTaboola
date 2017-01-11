@@ -24,7 +24,7 @@ export class App extends React.Component {
         JSON.stringify({
           'query': {
             'multi_match': {
-              'query': 'turkey 2017',
+              'query': '' + text,
               'fields': ['title', 'text']
             }
           }
@@ -41,7 +41,8 @@ export class App extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="root">
+        <img className="title" src="dist/res/title.gif"/>
         <SearchBar onSearch={this.handleSearch} />
         <InfiniteList items={this.state.items} />
       </div>

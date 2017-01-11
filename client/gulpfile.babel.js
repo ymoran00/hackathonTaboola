@@ -41,6 +41,11 @@ const cssPaths = {
   dest: `${dirs.dest}/css/`
 };
 
+const resourcesPaths = {
+  src: `${dirs.src}/res/*`,
+  dest: `${dirs.dest}/res/`
+};
+
 const appPaths = {
   src: `${dirs.src}/css/*.css`,
   dest: `${dirs.dest}/css/`
@@ -62,10 +67,11 @@ gulp.task('css', () => {
     .pipe(gulp.dest(cssPaths.dest));
 });
 
-// const appPath = {
-//   src: `${dirs.src}/js/*.js`,
-//   dest: `${dirs.dest}/js/`
-// };
+gulp.task('resources', () => {
+  return gulp.src(resourcesPaths.src)
+    .pipe(gulp.dest(resourcesPaths.dest));
+});
+
 
 
 gulp.task('build', () => {
@@ -92,6 +98,7 @@ gulp.task('default', (cb) => {
     ['clean'],
     ['sass'],
     ['css'],
+    ['resources'],
     ['build'],
     cb);
 });
