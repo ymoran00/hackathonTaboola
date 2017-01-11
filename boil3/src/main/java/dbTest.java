@@ -35,33 +35,13 @@ public class dbTest {
                 System.out.println("Creating statement...");
                 stmt = conn.createStatement();
 
-                String sql = "SELECT id, url, pub_id FROM videos limit 10";
+                String sql = "SELECT id, url, publisher_id, description FROM videos limit 10";
 
                 ResultSet rs = stmt.executeQuery(sql);
                 //STEP 5: Extract data from result set
                 while (rs.next()) {
-                    //Retrieve by column name
-                    String text = null;
-                    long id = rs.getLong("id");
-                    URL url = new URL(rs.getString("url"));
-                   // String articleText = null;
 
-                    try {
-                        text = ArticleExtractor.INSTANCE.getText(url);
-                        System.out.println("============================================================");
-                        System.out.println("ID: " + id);
-                        System.out.println("Url: " + url);
-                        System.out.println("text: " + text);
-
-                    } catch (BoilerpipeProcessingException e) {
-                        e.printStackTrace();
-                    }
-
-                    //Display values
-
-
-
-
+                   // VideosTableUpdater.updateRow(rs);
 
 
                 }
@@ -88,5 +68,6 @@ public class dbTest {
             }//end try
             System.out.println("Goodbye!");
         }//end main
-    }//end JDBCExample
+
+}//end JDBCExample
 
