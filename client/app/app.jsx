@@ -27,6 +27,7 @@ export class App extends React.Component {
                   'multi_match':
                   {
                       'query':'' + text,
+                      'type':  'phrase',
                       'fields':['title','text'],
                       'minimum_should_match': '80%'
                   }
