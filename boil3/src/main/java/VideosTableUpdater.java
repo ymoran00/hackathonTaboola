@@ -83,6 +83,11 @@ public class VideosTableUpdater {
 
             String text = ArticleExtractor.INSTANCE.getText(url);
 
+            System.out.println("=================");
+            System.out.println("ID: " + id);
+            System.out.println("URL: " + url);
+            System.out.println("TEXT " + text);
+
             String sql = "UPDATE videosKnows2 SET text = ?, status = ?  WHERE id = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1,text);
