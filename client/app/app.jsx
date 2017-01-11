@@ -28,8 +28,8 @@ export class App extends React.Component {
                   {
                       'query':'' + text,
                       'type':  'phrase',
-                      'fields':['title','text'],
-                      'minimum_should_match': '80%'
+                      'fields':['title','text']
+                      // 'minimum_should_match': '80%'
                   }
               }
           }
