@@ -76,6 +76,7 @@ public class ElasticSearchUpdater {
                 String publisherName = rs.getString("publisher_name");
                 String description = rs.getString("description");
                 String title = rs.getString("title");
+                Integer views = rs.getInt("views");
 
                 String date = rs.getString("publish_date");
                 Date parsedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.ms").parse(date);
@@ -91,6 +92,7 @@ public class ElasticSearchUpdater {
                 item.setDescription(description);
                 item.setTitle(title);
                 item.setDate(parsedDateStr);
+                item.setViews(views);
 
                 boolean isSuccessful = sendToElasticSearch(client, item, id);
                 if (isSuccessful) {
@@ -154,7 +156,7 @@ public class ElasticSearchUpdater {
         String json = new GsonBuilder().create()
                 .toJson(item);
         Index index = new Index.Builder(json)
-                .index("videos")
+                .index("videos2")
                 .type("item")
                 .id(String.valueOf(itemId))
                 .build();

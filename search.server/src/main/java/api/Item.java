@@ -18,6 +18,7 @@ public class Item {
     private String text;
     private String url;
     private double ctr;
+    private Integer views;
 
 
     public String getTitle() {
@@ -84,6 +85,14 @@ public class Item {
         this.ctr = ctr;
     }
 
+    public Integer getViews() {
+        return views;
+    }
+
+    public void setViews(Integer views) {
+        this.views = views;
+    }
+
     @Override
     public String toString() {
         return "Item{" +
@@ -91,10 +100,11 @@ public class Item {
                 ", thumbnailUrl='" + thumbnailUrl + '\'' +
                 ", publisher='" + publisher + '\'' +
                 ", description='" + description + '\'' +
-                ", date=" + date +
+                ", date='" + date + '\'' +
                 ", text='" + text + '\'' +
                 ", url='" + url + '\'' +
                 ", ctr=" + ctr +
+                ", views=" + views +
                 '}';
     }
 }

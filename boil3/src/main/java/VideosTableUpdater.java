@@ -54,7 +54,7 @@ public class VideosTableUpdater implements Runnable{
     }
 
     private void updateTable(){
-        String sql = "SELECT * FROM tabKnows WHERE status IS NULL LIMIT 1000";
+        String sql = "SELECT * FROM tabKnows WHERE status is null LIMIT 100000";
         ResultSet rs = null;
         try {
             System.out.println("Creating statement...");
@@ -68,11 +68,10 @@ public class VideosTableUpdater implements Runnable{
                 //STEP 5: Extract data from result set
                 while (rs.next()) {
                     updateRow(rs);
-                    if (rs.isLast()){
-                        tableEnded=true;
-                    }
+
                 }
 
+                tableEnded=true;
                 rs.close();
             }
         } catch (SQLException e) {
@@ -124,8 +123,10 @@ public class VideosTableUpdater implements Runnable{
     }
 
     public static void main(String[] args) {
-        new Thread(new VideosTableUpdater(0)).start();
-        new Thread(new VideosTableUpdater(1)).start();
+        new Thread(new VideosTableUpdater(9)).start();
+        new Thread(new VideosTableUpdater(8)).start();
+        new Thread(new VideosTableUpdater(7)).start();
+        new Thread(new VideosTableUpdater(6)).start();
     }
 
 }
