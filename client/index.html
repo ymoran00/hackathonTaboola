@@ -11,78 +11,11 @@
     <title>TabKnows - Knowledge Search Engine</title>
   </head>
   <body>
-    
-    <div id="dotan" onClick="setPublishersLabels();"> </div>
     <div class="browser-error">
       Please update your browser.
     </div>
     <div class="root"/>
-  
+
     <script src="dist/bundle.js"></script>
-
-  <script>
-      var includePubs = [],
-          excludePubs = [],
-          dummyCounter = 0,
-          filterContainer = document.getElementById('dotan');
-
-      function includeExcludePubs(that){
-          var index,
-              pubName = that.textContent;;
-          console.log('pubName: ' + pubName);
-
-          if (that.className.indexOf('excluded') > -1){
-             that.className = that.className.replace('excluded','');
-            includePubs.push(pubName);
-            index = excludePubs.indexOf(pubName);
-            if( index > -1) { 
-              excludePubs = excludePubs.filter(function(x){return x != pubName});
-            };
-          }
-          else {
-            that.className += ' excluded';
-            excludePubs.push(pubName);
-            index = includePubs.indexOf(pubName);
-            console.log('pubName: ' + pubName);
-            if( index > -1) {
-               includePubs = includePubs.filter(function(x){return x != pubName});
-            };
-          }
-
-          console.log('includePubs: ' + includePubs);
-          console.log('excludePubs: ' + excludePubs);
-          console.log('=============================');
-      }
-
-      function addPubToFilterContainer(pubName) {
-        var elemnt = document.createElement('div');
-
-        elemnt.setAttribute('onClick','includeExcludePubs(this);');
-        elemnt.className = "pubName";
-        elemnt.textContent = pubName;
-        filterContainer.appendChild(elemnt);
-      }
-
-      function setPublishersLabels(){
-        var itemsList = document.getElementsByClassName('article-card');
-            pubName = "";
-            
-            if (dummyCounter < 1){
-              for (var i = 0; i < itemsList.length; i++){
-                 pubName = itemsList[i].getElementsByTagName('h3')[0].textContent;
-
-                 if (includePubs.indexOf(pubName) === -1){
-                    includePubs.push(pubName);
-                    addPubToFilterContainer(pubName);
-                 }
-              }
-            }
-            dummyCounter++;
-          
-      }
-
-  </script>
   </body>
 </html>
-
-

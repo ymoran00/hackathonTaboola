@@ -75,7 +75,7 @@ gulp.task('resources', () => {
 
 
 gulp.task('build', () => {
-  return browserify({entries: `${dirs.src}/app.jsx`, extensions: ['.jsx'], debug: true})
+  return browserify({entries: `${dirs.src}/app.jsx`, extensions: ['.js','.jsx'], debug: true})
       .transform('babelify', {presets: ['es2015', 'react']})
       .bundle()
       .pipe(source('bundle.js'))
