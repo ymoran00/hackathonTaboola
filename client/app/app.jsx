@@ -1,8 +1,10 @@
 import SearchBar from './search-bar';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 //import Infinite  from 'react-infinite';
 import InfiniteList from './infinite-list';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import $ from 'jquery';
 
 const ELASTIC_SERVER = 'http://qa-backstage022.taboola.com:9200';
@@ -12,6 +14,7 @@ const ELASTIC_SEARCH_API = ELASTIC_SERVER + '/videos/_search';
 export class App extends React.Component {
   constructor (props) {
       super(props);
+      injectTapEventPlugin();
       this.state = {
         items: []
       };
@@ -61,6 +64,6 @@ export class App extends React.Component {
 }
 
 ReactDOM.render(
-    <App/>,
+    <MuiThemeProvider><App/></MuiThemeProvider>,
     document.querySelector('.root')
 );
