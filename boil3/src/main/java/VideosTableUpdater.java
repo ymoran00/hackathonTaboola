@@ -6,6 +6,8 @@ import java.net.URL;
 
 
 import java.sql.*;
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * Created by dotan.b on 1/11/17.
  */
@@ -13,6 +15,8 @@ public class VideosTableUpdater implements Runnable{
 
     public VideosTableUpdater(int modulo_number) {
         this.modulo_number = modulo_number;
+        passCounter = new AtomicInteger(0);
+        counter = new AtomicInteger(0);
     }
 
     // JDBC driver name and database URL
@@ -27,8 +31,8 @@ public class VideosTableUpdater implements Runnable{
     private  Statement stmt = null;
 
     private int modulo_number;
-    private  int passCounter = 0;
-    private  int counter = 0;
+    private AtomicInteger passCounter;
+    private AtomicInteger counter;
 
     @Override
     public void run(){
@@ -68,10 +72,12 @@ public class VideosTableUpdater implements Runnable{
                 //STEP 5: Extract data from result set
                 while (rs.next()) {
                     updateRow(rs);
-
+                    System.out.println("Counter: " + passCounter.get() + " successful crawl out of " + counter.get());
+                    if (rs.isLast()){
+                        tableEnded=true;
+                    }
                 }
 
-                tableEnded=true;
                 rs.close();
             }
         } catch (SQLException e) {
@@ -83,7 +89,7 @@ public class VideosTableUpdater implements Runnable{
 
     private void updateRow(ResultSet rs) {
         try {
-            counter++;
+            counter.incrementAndGet();
             URL url = new URL(rs.getString("url"));
             long id = rs.getLong("id");
 
@@ -102,7 +108,7 @@ public class VideosTableUpdater implements Runnable{
                 if (text != null && !text.equals("")) {
                     stmt.setString(1, text);
                     stmt.setString(2, "SCRAPED");
-                    passCounter++;
+                    passCounter.incrementAndGet();
                 } else {
                     stmt.setString(1, "");
                     stmt.setString(2, "FAILED");
@@ -123,10 +129,10 @@ public class VideosTableUpdater implements Runnable{
     }
 
     public static void main(String[] args) {
-        new Thread(new VideosTableUpdater(9)).start();
-        new Thread(new VideosTableUpdater(8)).start();
-        new Thread(new VideosTableUpdater(7)).start();
+        new Thread(new VideosTableUpdater(4)).start();
+        new Thread(new VideosTableUpdater(5)).start();
         new Thread(new VideosTableUpdater(6)).start();
+        new Thread(new VideosTableUpdater(3)).start();
     }
 
 }
