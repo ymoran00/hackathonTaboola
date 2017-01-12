@@ -55,9 +55,13 @@ export class App extends React.Component {
   render() {
     return (
       <div className="root">
-        <img className="title" src="dist/res/title.gif"/>
-        <SearchBar onSearch={this.handleSearch} />
-        <InfiniteList items={this.state.items} />
+        <div className="header">
+          <img className="title" src="dist/res/title.gif"/>
+          <SearchBar onSearch={this.handleSearch} />
+        </div>
+        <div className="wrapper">
+          <InfiniteList items={this.state.items} />
+      </div>
       </div>
     );
   }

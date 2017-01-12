@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import ExpandedArticle from './expanded-article';
 
 export default class ArticleCard extends React.Component {
 
@@ -9,10 +10,11 @@ export default class ArticleCard extends React.Component {
     this.state = {
       expanded: false,
       expandClass: '',
-      frameUrl: ''
+      frameUrl: '#'
     };
 
     this.handleExpandChange = this.handleExpandChange.bind(this);
+    this.handleCollapse = this.handleCollapse.bind(this);
   }
 
   fixThumbnailUrl(url) {
@@ -29,12 +31,16 @@ export default class ArticleCard extends React.Component {
 
   handleExpandChange(expanded) {
     let newClass = '';
-    let frameUrl = '';
+    let frameUrl = '#';
     if (expanded) {
       newClass = 'expanded';
       frameUrl = this.props.data.url;
     }
     this.setState({expanded: expanded, expandClass: newClass, frameUrl: frameUrl});
+  }
+
+  handleCollapse() {
+    this.handleExpandChange(false);
   }
 
   render() {
@@ -52,7 +58,8 @@ export default class ArticleCard extends React.Component {
           </CardMedia>
           <CardText className="abstract hide-on-expand"
             actAsExpander >{this.props.data.text}</CardText>
-          <iframe src={this.state.frameUrl} className="article-frame show-on-expand"/>
+          <ExpandedArticle frameUrl={this.state.frameUrl} publisher={this.props.data.publisher}
+              onClose={this.handleCollapse}/>
         </Card>
 
     );
