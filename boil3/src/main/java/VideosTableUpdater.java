@@ -24,6 +24,10 @@ public class VideosTableUpdater {
     private static Statement stmt2 = null;
     private static int passCounter = 0;
     private static int counter = 0;
+    private int modulo_number;
+
+    private Connection conn = null;
+    private Statement stmt = null;
 
 /*
     private String getPublisherName(int publisherId){
@@ -55,7 +59,7 @@ public class VideosTableUpdater {
 
     private  static void updateTable(){
 
-        String sql = "SELECT * FROM videosKnows2 WHERE status IS NULL";
+        String sql = "SELECT * FROM tabKnows WHERE status = NULL LIMIT 1000";
         ResultSet rs = null;
         try {
             stmt2 = conn.createStatement();
@@ -81,17 +85,14 @@ public class VideosTableUpdater {
             counter++;
             URL url = new URL(rs.getString("url"));
             long id = rs.getLong("id");
-           // if (id % 3 == 1) {
+
+            if ( id%10 == modulo_number ) {
                 String text = ArticleExtractor.INSTANCE.getText(url);
 
-                System.out.println("========= PASSED - " + passCounter +" (" + counter + ") ========");
-                System.out.println("ID: " + id);
-                System.out.println("URL: " + url);
-                if (text != null && text != "") {
-                    // System.out.println("TEXT: " + text.substring(0, 30));
-                } else {
-                    System.out.println("TEXT: FAILED ");
-                }
+            System.out.println("=================");
+            System.out.println("ID: " + id);
+            System.out.println("URL: " + url);
+            System.out.println("TEXT " + text);
 
                 String sql = "UPDATE trc.videosKnows2 SET text = ?, status = ?  WHERE id = ?";
                 PreparedStatement stmt = conn.prepareStatement(sql);
