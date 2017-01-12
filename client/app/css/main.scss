@@ -151,14 +151,51 @@ input {
 
 
 .publisher-filters {
-  /* */
+  position: fixed;
+  background-color: gray;
+  bottom: 0px;
+  left: 0px;
+  height: auto;
+  border-top: 5px solid #85fcd6;
+  width: 100%;
+
+  -webkit-transition: height 4s;
+  transition: height 4s;
+  div > div {
+    height: 22px; 
+    margin: 2.5px 2.5px 2.5px 0px !important;
+    display: inline-block !important;
+    position: relative;
+    span {
+        font-size: 10px !important;
+        line-height: 25px !important;
+    }
+    svg {
+        height: 18px !important;
+        width: 18px !important;
+    }
+  }
+
   .include {
-    /*  */
+    display: -webkit-inline-box;
   }
   .exclude {
-    /*  */
+    div {
+      background-color: #85fcd6 !important;
+    }
+
+    svg {
+      -webkit-transform: rotateZ(-45deg);
+      -ms-transform: rotateZ(-45deg);
+      transform: rotateZ(-45deg);
+    }
   }
 }
+
+.publisher-filters.close {
+   height: 10px;
+   border-top: 10px solid #85fcd6;
+ }
 
 
 

@@ -124,8 +124,10 @@ public class VideosTableUpdater implements Runnable{
     }
 
     public static void main(String[] args) {
-        new Thread(new VideosTableUpdater(0)).start();
-        new Thread(new VideosTableUpdater(1)).start();
+        new Thread(new VideosTableUpdater(4)).start();
+        new Thread(new VideosTableUpdater(5)).start();
+        new Thread(new VideosTableUpdater(6)).start();
+        new Thread(new VideosTableUpdater(7)).start();
     }
 
 }
