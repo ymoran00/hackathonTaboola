@@ -45,8 +45,6 @@ public class VideosTableUpdater implements Runnable{
             System.out.println("Connecting to a selected database...");
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             System.out.println("Connected database successfully...");
-            //STEP 4: Execute a query
-            System.out.println("Creating statement...");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
@@ -56,13 +54,15 @@ public class VideosTableUpdater implements Runnable{
     }
 
     private void updateTable(){
-        String sql = "SELECT * FROM tabKnows WHERE status = NULL LIMIT 1000";
+        String sql = "SELECT * FROM tabKnows WHERE status IS NULL LIMIT 1000";
         ResultSet rs = null;
         try {
+            System.out.println("Creating statement...");
             stmt = conn.createStatement();
 
             boolean tableEnded = false;
             while(!tableEnded) {
+                System.out.println("Executing statement...");
                 rs = stmt.executeQuery(sql);
 
                 //STEP 5: Extract data from result set
@@ -100,7 +100,7 @@ public class VideosTableUpdater implements Runnable{
                 String sql = "UPDATE trc.tabKnows SET text = ?, status = ?  WHERE id = ?";
                 PreparedStatement stmt = conn.prepareStatement(sql);
 
-                if (text != null && text != "") {
+                if (text != null && !text.equals("")) {
                     stmt.setString(1, text);
                     stmt.setString(2, "SCRAPED");
                     passCounter++;
