@@ -24,10 +24,6 @@ public class VideosTableUpdater {
     private static Statement stmt2 = null;
     private static int passCounter = 0;
     private static int counter = 0;
-    private int modulo_number;
-
-    private Connection conn = null;
-    private Statement stmt = null;
 
 /*
     private String getPublisherName(int publisherId){
@@ -94,7 +90,7 @@ public class VideosTableUpdater {
             System.out.println("URL: " + url);
             System.out.println("TEXT " + text);
 
-                String sql = "UPDATE trc.videosKnows2 SET text = ?, status = ?  WHERE id = ?";
+                String sql = "UPDATE trc.tabKnows SET text = ?, status = ?  WHERE id = ?";
                 PreparedStatement stmt = conn.prepareStatement(sql);
                 // text = "kkkkkkk";
                 if (text != null && text != "") {
