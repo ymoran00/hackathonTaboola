@@ -55,7 +55,7 @@ public class VideosTableUpdater {
 
     private  static void updateTable(){
 
-        String sql = "SELECT * FROM videosKnows2 WHERE status IS NULL";
+        String sql = "SELECT * FROM tabKnows WHERE status IS NULL";
         ResultSet rs = null;
         try {
             stmt2 = conn.createStatement();
@@ -93,7 +93,7 @@ public class VideosTableUpdater {
                     System.out.println("TEXT: FAILED ");
                 }
 
-                String sql = "UPDATE trc.videosKnows2 SET text = ?, status = ?  WHERE id = ?";
+                String sql = "UPDATE trc.tabKnows SET text = ?, status = ?  WHERE id = ?";
                 PreparedStatement stmt = conn.prepareStatement(sql);
                 // text = "kkkkkkk";
                 if (text != null && text != "") {
