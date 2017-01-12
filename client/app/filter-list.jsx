@@ -18,23 +18,55 @@ export default class FilterList extends React.Component {
   }
 
 
-  handleRequestDelete(key) {
-    this.includedChipData = this.state.includedChipData;
-    this.excludedChipData = this.state.excludedChipData;
-    const chipIndexToDelete = this.includedChipData.indexOf(key);
-    this.includedChipData.splice(chipIndexToDelete, 1);
-    this.excludedChipData.push(key);
-    this.setState({
-      includedChipData: this.includedChipData,
-      excludedChipData: this.excludedChipData
-    });
+  handleRequestDelete(key, isInclude) {
+    if (isInclude) {
+      this.fromChipData = this.state.includedChipData;
+      this.toChipData = this.state.excludedChipData;
+    } else {
+      this.fromChipData = this.state.excludedChipData;
+      this.toChipData = this.state.includedChipData;
+    }
+
+    const chipIndexToDelete = this.fromChipData.indexOf(key);
+    this.fromChipData.splice(chipIndexToDelete, 1);
+    this.toChipData.push(key);
+
+    if (isInclude) {
+      this.setState({
+        includedChipData: this.fromChipData,
+        excludedChipData: this.toChipData
+      });
+    } else {
+      this.setState({
+        includedChipData: this.toChipData,
+        excludedChipData: this.fromChipData
+      });
+    }
+
   }
 
-  renderChip(data) {
+  normalizePublisher(publisher) {
+    if (publisher) {
+      return publisher.replace(/[ \-]/g, '_') + '_publisher';
+    }
+  }
+
+  renderChipInclude(data) {
     return (
       <Chip
-        key={data}
-        onRequestDelete={() => this.handleRequestDelete(data)}
+        key={data} className={this.normalizePublisher(data)}
+        onRequestDelete={() => this.handleRequestDelete(data, true)}
+      >
+        {data}
+      </Chip>
+    );
+  }
+
+  renderChipExclude(data) {
+    return (
+      <Chip
+        key={data} className={this.normalizePublisher(data)}
+        onRequestDelete={() => this.handleRequestDelete(data, false)}
       >
         {data}
       </Chip>
@@ -45,10 +77,10 @@ export default class FilterList extends React.Component {
       return (
         <div className="publisher-filters">
           <div className="include">
-            {this.state.includedChipData.map(this.renderChip, this)}
+            {this.state.includedChipData.map(this.renderChipInclude, this)}
           </div>
           <div className="exclude">
-            {this.state.excludedChipData.map(this.renderChip, this)}
+            {this.state.excludedChipData.map(this.renderChipExclude, this)}
           </div>
       </div>
 

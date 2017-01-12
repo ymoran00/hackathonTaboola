@@ -45,9 +45,15 @@ export default class ArticleCard extends React.Component {
     this.handleExpandChange(false);
   }
 
+  normalizePublisher(publisher) {
+    if (publisher) {
+      return publisher.replace(/[ \-]/g, '_') + '_publisher';
+    }
+  }
+
   render() {
       return (
-        <Card className={"card-container " + this.state.expandClass}
+        <Card className={"card-container " + this.state.expandClass + " " + this.normalizePublisher(this.props.data.publisher)}
           onExpandChange={this.handleExpandChange}>
           <CardMedia className="hide-on-expand"
             overlay={<CardTitle
@@ -60,7 +66,7 @@ export default class ArticleCard extends React.Component {
           </CardMedia>
           <CardText className="abstract hide-on-expand"
             actAsExpander >{this.props.data.text}</CardText>
-          <div className="people-icon">
+          <div className="people-icon hide-on-expand">
               {this.props.data.views}<FontIcon className="material-icons" color={grey100}><i className="material-icons">people</i></FontIcon>
           </div>
           <ExpandedArticle frameUrl={this.state.frameUrl} publisher={this.props.data.publisher}
