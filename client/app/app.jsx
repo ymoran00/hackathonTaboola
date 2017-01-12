@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 //import Infinite  from 'react-infinite';
+import CommUtils from './utils/comm';
 import InfiniteList from './infinite-list';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import $ from 'jquery';
@@ -23,33 +24,11 @@ export class App extends React.Component {
 
   handleSearch(text) {
     var that = this;
-    $.post(ELASTIC_SEARCH_API,
-        JSON.stringify({
-              'query':
-              {
-                  'multi_match':
-                  {
-                      'query':'' + text,
-                      'type':  'phrase',
-                      'fields':['title','text']
-                      // 'minimum_should_match': '80%'
-                  }
-              },
-              "sort": [
-                  { "_score": { "order": "desc" }},
-                  { "ctr": { "order": "desc" }},
-                  { "date": { "order": "desc" }}
-              ]
-          }
-        ),$.proxy(function(data) {
-          console.log (`got ${data}!`);
-          this.setState({
-              items: data.hits.hits
-          });
-        },this
-    )).fail(() => {
-      alert ('FAILED...')
-    });
+    CommUtils.searchText(text, function(items) {
+      that.setState({
+          items: items
+      });
+    }.bind(this));
   }
 
   render() {
