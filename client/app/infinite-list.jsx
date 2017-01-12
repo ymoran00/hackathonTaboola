@@ -19,7 +19,7 @@ export default class InfiniteList extends React.Component {
         itemsToHide = document.getElementsByClassName(convertedOubName);
     for (var i=0; i < itemsToHide.length; i++){
         if ((itemsToHide[i].getAttribute('style')).indexOf('display: none') > -1 ){
-          itemsToHide[i].setAttribute('style','display: block');
+          itemsToHide[i].setAttribute('style','display: block; background-color: #FFF;');
           console.log("reverted ->", convertedOubName);
         }
         else {
