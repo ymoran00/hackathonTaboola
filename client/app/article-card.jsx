@@ -59,7 +59,7 @@ export default class ArticleCard extends React.Component {
           <CardText className="abstract hide-on-expand"
             actAsExpander >{this.props.data.text}</CardText>
           <ExpandedArticle frameUrl={this.state.frameUrl} publisher={this.props.data.publisher}
-              onClose={this.handleCollapse}/>
+              onCollapse={this.handleCollapse}/>
         </Card>
 
     );

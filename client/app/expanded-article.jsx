@@ -8,22 +8,31 @@ export default class ExpandedArticle extends React.Component {
   constructor(props) {
     super(props);
 
+    this.collapse = this.collapse.bind(this);
+
   }
 
+  collapse() {
+    this.props.onCollapse();
+  }
 
   render() {
     return (
       <div className="article-frame show-on-expand">
         <Toolbar>
-          <ToolbarGroup firstChild={true}>
+          <ToolbarGroup firstChild={true} style={{width: 100+"%"}}>
             <ToolbarTitle text={this.props.publisher} />
             <IconButton touch>
               <FontIcon className="material-icons" color={blue500}><i className="material-icons">open_in_browser</i></FontIcon>
             </IconButton>
-            <FontIcon className="material-icons" color={blue500}><i className="material-icons">share</i></FontIcon>
+            <IconButton touch>
+              <FontIcon className="material-icons" color={blue500}><i className="material-icons">share</i></FontIcon>
+          </IconButton>
           </ToolbarGroup>
           <ToolbarGroup>
-            <FontIcon className="material-icons" color={grey900}><i className="material-icons">clear</i></FontIcon>
+            <IconButton touch onTouchTap={this.collapse}>
+              <FontIcon className="material-icons" color={grey900}><i className="material-icons">clear</i></FontIcon>
+          </IconButton>
           </ToolbarGroup>
         </Toolbar>
         <iframe src={this.props.frameUrl} className=""/>
