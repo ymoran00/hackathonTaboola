@@ -30,6 +30,7 @@ public class VideosTableUpdater implements Runnable{
     private  int passCounter = 0;
     private  int counter = 0;
 
+    @Override
     public void run(){
         setConnection();
         updateTable();
@@ -63,12 +64,13 @@ public class VideosTableUpdater implements Runnable{
             boolean tableEnded = false;
             while(!tableEnded) {
                 rs = stmt.executeQuery(sql);
-                if (rs = null){ //ok??
-                    tableEnded=true;
-                }
+
                 //STEP 5: Extract data from result set
                 while (rs.next()) {
                     updateRow(rs);
+                    if (rs.isLast()){
+                        tableEnded=true;
+                    }
                 }
 
                 rs.close();
@@ -122,8 +124,8 @@ public class VideosTableUpdater implements Runnable{
     }
 
     public static void main(String[] args) {
-        new Thread(new VideosTableUpdater(0)).start;
-        new Thread(new VideosTableUpdater(1)).start;
+        new Thread(new VideosTableUpdater(0)).start();
+        new Thread(new VideosTableUpdater(1)).start();
     }
 
 }

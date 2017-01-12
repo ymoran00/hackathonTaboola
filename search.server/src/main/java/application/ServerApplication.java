@@ -20,7 +20,7 @@ public class ServerApplication {
 
 	private static final Logger logger = Logger.getLogger(ServerApplication.class);
 
-	public static void main(String[] args) {
-		ConfigurableApplicationContext app = SpringApplication.run(ServerApplication.class, args);
-	}
+//	public static void main(String[] args) {
+//		ConfigurableApplicationContext app = SpringApplication.run(ServerApplication.class, args);
+//	}
 }
