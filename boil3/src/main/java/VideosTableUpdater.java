@@ -9,8 +9,11 @@ import java.sql.*;
 /**
  * Created by dotan.b on 1/11/17.
  */
-public class VideosTableUpdater {
+public class VideosTableUpdater implements Runnable{
 
+    public VideosTableUpdater(int modulo_number) {
+        this.modulo_number = modulo_number;
+    }
 
     // JDBC driver name and database URL
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
@@ -20,21 +23,20 @@ public class VideosTableUpdater {
     static final String USER = "trc";
     static final String PASS = "taboola";
 
-    private static Connection conn = null;
-    private static Statement stmt2 = null;
-    private static int passCounter = 0;
-    private static int counter = 0;
+    private  Connection conn = null;
+    private  Statement stmt = null;
 
-/*
-    private String getPublisherName(int publisherId){
-        String sql = "SELECT name FROM publishers WHERE id = publisherId";
-        ResultSet rs = stmt.executeQuery(sql);
+    private int modulo_number;
+    private  int passCounter = 0;
+    private  int counter = 0;
 
-
+    @Override
+    public void run(){
+        setConnection();
+        updateTable();
     }
-*/
 
-    private static void setConnection(){
+    private  void setConnection(){
         try {
             //STEP 2: Register JDBC driver
             Class.forName("com.mysql.jdbc.Driver");
@@ -53,20 +55,26 @@ public class VideosTableUpdater {
 
     }
 
-    private  static void updateTable(){
-
-        String sql = "SELECT * FROM videosKnows2 WHERE status IS NULL";
+    private void updateTable(){
+        String sql = "SELECT * FROM tabKnows WHERE status = NULL LIMIT 1000";
         ResultSet rs = null;
         try {
-            stmt2 = conn.createStatement();
-            rs = stmt2.executeQuery(sql);
+            stmt = conn.createStatement();
 
-            //STEP 5: Extract data from result set
-            while (rs.next()) {
-                updateRow(rs);
+            boolean tableEnded = false;
+            while(!tableEnded) {
+                rs = stmt.executeQuery(sql);
+
+                //STEP 5: Extract data from result set
+                while (rs.next()) {
+                    updateRow(rs);
+                    if (rs.isLast()){
+                        tableEnded=true;
+                    }
+                }
+
+                rs.close();
             }
-
-            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -74,28 +82,24 @@ public class VideosTableUpdater {
     }
 
 
-
-
-    private  static void updateRow(ResultSet rs) {
+    private void updateRow(ResultSet rs) {
         try {
             counter++;
             URL url = new URL(rs.getString("url"));
             long id = rs.getLong("id");
-           // if (id % 3 == 1) {
+
+            if ( id%10 == modulo_number ) {
+
                 String text = ArticleExtractor.INSTANCE.getText(url);
 
-                System.out.println("========= PASSED - " + passCounter +" (" + counter + ") ========");
+                System.out.println("=================");
                 System.out.println("ID: " + id);
                 System.out.println("URL: " + url);
-                if (text != null && text != "") {
-                    // System.out.println("TEXT: " + text.substring(0, 30));
-                } else {
-                    System.out.println("TEXT: FAILED ");
-                }
+                System.out.println("TEXT " + text);
 
-                String sql = "UPDATE trc.videosKnows2 SET text = ?, status = ?  WHERE id = ?";
+                String sql = "UPDATE trc.tabKnows SET text = ?, status = ?  WHERE id = ?";
                 PreparedStatement stmt = conn.prepareStatement(sql);
-                // text = "kkkkkkk";
+
                 if (text != null && text != "") {
                     stmt.setString(1, text);
                     stmt.setString(2, "SCRAPED");
@@ -108,7 +112,7 @@ public class VideosTableUpdater {
                 System.out.println("------>" + stmt.toString());
                 stmt.executeUpdate();
 
-        //    }
+            }
         } catch (BoilerpipeProcessingException e) {
             e.printStackTrace();
         } catch (SQLException e) {
@@ -120,11 +124,9 @@ public class VideosTableUpdater {
     }
 
     public static void main(String[] args) {
-        setConnection();
-        updateTable();
+        new Thread(new VideosTableUpdater(0)).start();
+        new Thread(new VideosTableUpdater(1)).start();
     }
-
-
 
 }
 
