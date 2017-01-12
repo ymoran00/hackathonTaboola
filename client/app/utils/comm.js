@@ -1,7 +1,7 @@
 import $ from 'jquery';
 
 const ELASTIC_SERVER = 'http://qa-backstage022.taboola.com:9200';
-const ELASTIC_SEARCH_API = ELASTIC_SERVER + '/videos/_search';
+const ELASTIC_SEARCH_API = ELASTIC_SERVER + '/videos2/_search';
 
 export default class CommUtils {
   static searchText (text, handler) {

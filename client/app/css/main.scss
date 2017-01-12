@@ -89,6 +89,21 @@ input {
   }
 }
 
+.people-icon {
+  vertical-align: middle;
+    display: flex;
+    align-items: center;
+    position: relative;
+    bottom: 86px;
+    z-index: 300;
+    right: 10px;
+    color: white;
+    justify-content: flex-end;
+    .material-icons {
+      margin-left: 0px;
+    }
+}
+
 .card-container {
   margin-bottom: 20px;
   height: 100%;
