@@ -14,6 +14,20 @@ export default class InfiniteList extends React.Component {
       cardHeight: 800
     }
   }
+  name(publisherName,isInclude) {
+    var convertedOubName = publisherName.replace(/[ \-]/g, '_') + '_publisher',
+        itemsToHide = document.getElementsByClassName(convertedOubName);
+    for (var i=0; i < itemsToHide.length; i++){
+        if ((itemsToHide[i].getAttribute('style')).indexOf('display: none') > -1 ){
+          itemsToHide[i].setAttribute('style','display: block');
+          console.log("reverted ->", convertedOubName);
+        }
+        else {
+          itemsToHide[i].setAttribute('style','display: none');
+          console.log("hided ->", convertedOubName);
+        }
+    }
+  }
 
   render() {
       return (
@@ -21,7 +35,7 @@ export default class InfiniteList extends React.Component {
           {this.props.items.map(function(item) {
             return <ArticleCard key={item._id} data={item['_source']}/>
           })}
-          <FilterList />
+          <FilterList onChange={this.name} />
       </div>
     );
   }

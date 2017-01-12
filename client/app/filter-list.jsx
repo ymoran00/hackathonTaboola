@@ -42,6 +42,7 @@ export default class FilterList extends React.Component {
         excludedChipData: this.fromChipData
       });
     }
+    this.props.onChange(key);
 
   }
 

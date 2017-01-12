@@ -180,7 +180,7 @@ input {
   div > div {
     height: 22px; 
     margin: 2.5px 2.5px 2.5px 0px !important;
-    display: inline-block !important;
+    display: inline-flex !important;
     position: relative;
     span {
         font-size: 10px !important;
@@ -193,7 +193,7 @@ input {
   }
 
   .include {
-    display: -webkit-inline-box;
+    
   }
   .exclude {
     div {
